@@ -50,15 +50,15 @@ file(GLOB includes tensorRTplugin/*.h util/cuda/*.h util/*.h)
 
 include_directories(${PROJECT_INCLUDE_DIR}/include)
 include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(/home/fares/TensorRT/include)
+include_directories(/home/student/Projects/TensorRT-3.0.4/include)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
 
 cuda_add_library(inferLib SHARED ${sources})
-target_link_libraries(inferLib /home/fares/TensorRT/lib/libnvcaffe_parser.so)
-target_link_libraries(inferLib /home/fares/TensorRT/lib/libnvinfer.so)
-target_link_libraries(inferLib /home/fares/TensorRT/lib/libnvinfer_plugin.so)
-target_link_libraries(inferLib /home/fares/TensorRT/lib/libnvparsers.so)
+target_link_libraries(inferLib /home/student/Projects/TensorRT-3.0.4/lib/libnvcaffe_parser.so)
+target_link_libraries(inferLib /home/student/Projects/TensorRT-3.0.4/lib/libnvinfer.so)
+target_link_libraries(inferLib /home/student/Projects/TensorRT-3.0.4/lib/libnvinfer_plugin.so)
+target_link_libraries(inferLib /home/student/Projects/TensorRT-3.0.4/lib/libnvparsers.so)
 
 # transfer all headers to the include directory
 foreach(include ${includes})

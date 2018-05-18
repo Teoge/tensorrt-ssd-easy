@@ -1,0 +1,5 @@
+CMakeFiles/*
+CMakeCache.txt
+Gadde/*
+Makefile
+cmake_install.cmake

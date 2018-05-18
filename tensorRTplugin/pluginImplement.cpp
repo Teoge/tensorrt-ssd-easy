@@ -422,7 +422,7 @@ nvinfer1::IPlugin* PluginFactory::createPlugin(const char* layerName, const nvin
     {
         assert(mDetection_out.get() == nullptr);
         mDetection_out = std::unique_ptr<INvPlugin, decltype(nvPluginDeleter)>
-                (createSSDDetectionOutputPlugin({true, false, 0, 21, 400, 200, 0.01, 0.45, CodeType_t::CENTER_SIZE}), nvPluginDeleter);
+                (createSSDDetectionOutputPlugin({true, false, 0, 21, 400, 200, 0.5, 0.45, CodeType_t::CENTER_SIZE}), nvPluginDeleter);
         return mDetection_out.get();
     }
     else

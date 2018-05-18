@@ -18,50 +18,27 @@ void TensorNet::caffeToTRTModel(const std::string& deployFile, const std::string
 
     DataType modelDataType = useFp16 ? DataType::kHALF : DataType::kFLOAT;
 
-    std::cout << "Debugging here. " <<std::endl;
     std::cout << deployFile.c_str() <<std::endl;
     std::cout << modelFile.c_str() <<std::endl;
 
-    /** Debugging Notes
-     *  1. The datatype is taken by the code.
-     *  2. The network is properly defined here. A network is created here.
-     *  3. There is some error with the deploy file.
-     *  4. parser used here is nvCaffeParser.
-     *  5. blobNameToTensor also has some name.
-     * */
-    std::cout<< " ----  Might be an error below, Error ---- "<<std::endl;
     const IBlobNameToTensor* blobNameToTensor =	parser->parse(deployFile.c_str(),
                                                               modelFile.c_str(),
                                                               *network,
                                                               DataType::kFLOAT);
-
-    std::cout<< "Came till here "<<std::endl;
     assert(blobNameToTensor != nullptr);
-
-    std::cout << "Whats happening here ? " << std::endl;
     for (auto& s : outputs) network->markOutput(*blobNameToTensor->find(s.c_str()));
 
-    std::cout << "Is it here 1" <<std::endl;
     builder->setMaxBatchSize(maxBatchSize);
     builder->setMaxWorkspaceSize(16 << 20);
-    std::cout << "Is it here 2" <<std::endl;
 
-    IRuntime* infer;
-    infer = createInferRuntime(gLogger);
-    std::cout << "Is it here 2.1" <<std::endl;
     if(useFp16)
     {
         builder->setHalf2Mode(true);
     }
     ICudaEngine* engine = builder->buildCudaEngine( *network );
-    std::cout << "Is it here 2.2" <<std::endl;
     assert(engine);
-
-    std::cout << "Is it here 3" <<std::endl;
     network->destroy();
     parser->destroy();
-
-    std::cout << "This project is finished " << std::endl;
     gieModelStream = engine->serialize();
     engine->destroy();
     builder->destroy();

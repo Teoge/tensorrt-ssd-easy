@@ -153,7 +153,6 @@ bool    loadImageBGR( cv::Mat frame, float3** cpu, float3** gpu, int* width, int
 	// allocate buffer for the image
 	if( !cudaAllocMapped((void**)cpu, (void**)gpu, imgSize) )
 	{
-//		printf(LOG_CUDA "failed to allocated %zu bytes for image %s\n");
 		printf(LOG_CUDA "failed to allocated bytes for image");
 		return false;
 	}
@@ -164,19 +163,10 @@ bool    loadImageBGR( cv::Mat frame, float3** cpu, float3** gpu, int* width, int
 	{
 		for( uint32_t x=0; x < imgWidth; x++ )
 		{
-			const float mul = 1.0f;
-
-            cv::Vec3b intensity = frame.at<cv::Vec3b>(y,x);
-//            cout << (float)intensity.val[0]  <<" , "<< (float)intensity.val[1]<<" , "<< (float)intensity.val[2]<<endl;
-			const float3 px = make_float3(((float)intensity.val[0] - 123.0f) * mul,
-										  ((float)intensity.val[1] - 117.0f) * mul,
-										  ((float)intensity.val[2] - 104.0f) * mul );
-
-            // imgPixels * 0 + y * imgWidth + x
-			// note:  caffe/GIE is band-sequential (as opposed to the typical Band Interleaved by Pixel)
-			cpuPtr[imgPixels * 0 + y * imgWidth + x] = px.x;
-			cpuPtr[imgPixels * 1 + y * imgWidth + x] = px.y;
-			cpuPtr[imgPixels * 2 + y * imgWidth + x] = px.z;
+      cv::Vec3b intensity = frame.at<cv::Vec3b>(y,x);
+			cpuPtr[imgPixels * 0 + y * imgWidth + x] = (float)intensity.val[0];
+			cpuPtr[imgPixels * 1 + y * imgWidth + x] = (float)intensity.val[1];
+			cpuPtr[imgPixels * 2 + y * imgWidth + x] = (float)intensity.val[2];
 		}
 	}
 	return true;
